@@ -1,0 +1,72 @@
+ internal class Program
+ {
+     private static Random random = new Random();
+     private static int roll = 1080000;
+     static void Main(string[] args)
+     {
+         //Console.WriteLine(GetDiceRolls(2));
+         int[] rolls = GetDiceRolls(roll);
+         histabrot(rolls);
+
+
+
+     }
+     static int[] GetDiceRolls(int roll)
+     {
+         int[] slots = new int[11];
+         for (int i = 0; i < roll; i++)
+         {
+             int cube1 = random.Next(1, 7);
+             int cube2 = random.Next(1, 7);
+
+             int result = cube1 + cube2;
+
+             slots[result - 2] += 1;
+
+         }
+         //אם אתה רוצה לראות את המערך אז אפשר להוסיף:
+         /*for (int i = 0; i < 11; i++)
+         {
+             Console.WriteLine(slots[i]);
+         }
+         */
+         return slots;
+
+     }
+     static void histabrot(int[] slots)
+     {
+         int save_roll = roll;
+         int[] frequencies = new int[11];
+
+         // מחשב את התוצאה המנוחשת
+         for (int die1 = 1; die1 <= 6; die1++)
+         {
+             for (int die2 = 1; die2 <= 6; die2++)
+             {
+                 int sum = die1 + die2;
+                 frequencies[sum - 2]++;
+             }
+         }
+         for (int j = 0; j < frequencies.Length; j++)
+         {
+             if (roll / 36 * frequencies[j] <1)
+             {
+                
+             }
+             else 
+             frequencies[j] = roll / 36 * frequencies[j];
+         }
+         for (int i = 0; i < slots.Length; i++)
+         {
+             int expectedFrequency = frequencies[i];
+             int observedFrequency = slots[i];
+             float shgia = (int)(Math.Abs(expectedFrequency - observedFrequency) / (double)expectedFrequency * 100);
+             if (roll < 36)
+             {
+                 
+                 roll = 36;
+             }
+             Console.WriteLine($"The number {i + 2} was expected to occur {expectedFrequency} times out of {roll}. In reality, it occurred {observedFrequency} times out of {save_roll}. The percentage difference is {shgia}%.");
+         }
+     }
+ }
